@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 const NumberSelector = ({
   setError,
   error,
@@ -14,19 +15,19 @@ const NumberSelector = ({
 
   return (
     <NumberSelectorContainer>
-      <p className="error">{error}</p>
-      <div className="flex">
-        {arrNumber.map((value, i) => (
-          <Box
-            isSelected={value === selectedNumber}
-            key={i}
+      <SelectLabel>Select a Number</SelectLabel>
+      <FlexContainer>
+        {arrNumber.map((value) => (
+          <NumberBox
+            key={value}
+            isSelected={selectedNumber === value}
             onClick={() => numberSelectorHandler(value)}
           >
             {value}
-          </Box>
+          </NumberBox>
         ))}
-      </div>
-      <p>Select Number</p>
+      </FlexContainer>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </NumberSelectorContainer>
   );
 };
@@ -36,29 +37,74 @@ export default NumberSelector;
 const NumberSelectorContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: end;
+  gap: 20px;
+  align-items: center;
+`;
 
-  .flex {
-    display: flex;
-    gap: 24px;
+const SelectLabel = styled.p`
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+`;
+
+const FlexContainer = styled.div`
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+const NumberBox = styled.button`
+  width: 70px;
+  height: 70px;
+  border: 3px solid ${(props) => (props.isSelected ? "#667eea" : "#999")};
+  background: ${(props) =>
+    props.isSelected
+      ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+      : "white"};
+  color: ${(props) => (props.isSelected ? "white" : "#333")};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
   }
-  p {
-    font-size: 24px;
-    font-weight: 700px;
-  }
-  .error {
-    color: red;
+
+  &:active {
+    transform: scale(0.98);
   }
 `;
 
-const Box = styled.div`
-  height: 72px;
-  width: 72px;
-  border: 1px solid black;
-  display: grid;
-  place-items: center;
-  font-size: 24px;
-  font-weight: 700;
-  background-color: ${(props) => (props.isSelected ? "black" : "white")};
-  color: ${(props) => (!props.isSelected ? "black" : "white")};
+const ErrorMessage = styled.span`
+  color: #f5576c;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  animation: shake 0.5s ease;
+  background: rgba(245, 87, 108, 0.1);
+  padding: 10px 20px;
+  border-radius: 8px;
+  border-left: 4px solid #f5576c;
+
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-10px);
+    }
+    75% {
+      transform: translateX(10px);
+    }
+  }
 `;
